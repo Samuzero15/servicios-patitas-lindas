@@ -1,0 +1,12 @@
+<h1>
+    Personal disponible en la base de datos
+</h1>
+
+<a href="/personal/add">Añadir una nuevo empleado</a>
+
+<% personal.forEach((p) => { %>
+    <%= p.nombres%>
+    <%= p.apellidos%>
+    <%= p.cargo%>
+    <br>
+<% }) %>

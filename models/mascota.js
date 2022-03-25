@@ -27,8 +27,9 @@ const mascotaSchema = new mongoose.Schema({
         required: true
     },
     ubicacion: {
-        type: String,
-        required: true
+        type: Array,
+        required: true,
+        default: [30.0, 32.2]
     },
     historial_clinico: {
         type: Array,

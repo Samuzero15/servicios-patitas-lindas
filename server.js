@@ -3,8 +3,7 @@ require("dotenv").config()
 const express = require("express");
 const app = express();
 const mongoose = require("mongoose");
-const XMLHttpRequest = require('xmlhttprequest').XMLHttpRequest;
-const Api = require('rest-api-handler');/*import { Api } from 'rest-api-handler';*/
+const axios = require('axios').default;
 const cors = require("cors");
 
 app.set('view-engine', 'ejs');
@@ -19,19 +18,17 @@ db.on('error', (error)=> console.error(error));
 db.once('open', () => console.log("Conectado a la base de datos. UwU"));
 
 
-app.get("/", (req, res)=>{
-    const xhttp = new XMLHttpRequest();
-    const api_mascotas = new Api("http://localhost:3000/api/mascotas/");
-    let mascotas = null;
-    api_mascotas.get("/").then(response => {
-        console.log(response);
-    });
-    
-    console.log(mascotas);
-    res.render('index.ejs', {mascotas: mascotas});
-});
+app.get("/", (req, res) => {res.send("Hello world");});
 
-const rutasApiMascotas = require('./routes/mascotas');
+app.get("/mapa", (req, res)=>{res.render('ejemplo_mapa.ejs')});
+
+//const ctrlMascotas = 
+app.use("/mascotas", require('./routes/ctrl/mascotasCtrl'));
+app.use("/personal", require('./routes/ctrl/personalCtrl'));
+
+const rutasApiMascotas = require('./routes/api/mascotasApi');
 app.use("/api/mascotas", rutasApiMascotas);
+const rutasApiPersonal = require('./routes/api/personalApi');
+app.use("/api/personal", rutasApiPersonal);
 
 app.listen(3000, ()=> console.log("Server started bro"));

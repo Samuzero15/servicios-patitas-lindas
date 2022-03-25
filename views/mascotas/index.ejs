@@ -1,0 +1,14 @@
+<h1>
+    Mascotas disponibles en la base de datos.
+</h1>
+
+<a href="/mascotas/add">Añadir una nueva mascota</a>
+
+<% mascotas.forEach((m) => { %>
+    <%=m.tipo%> 
+    <%=m.nombre%> 
+    <%=m.raza%> 
+    <%=m.fecha_encontrado%> 
+    <%=m.sexo%> 
+    <br>
+<% }) %>

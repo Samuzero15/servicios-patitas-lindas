@@ -2,7 +2,7 @@ GET http://localhost:3000/api/mascotas/
 
 ###
 
-GET http://localhost:3000/api/mascotas/62369e0c4d17d119e9c4f28a
+GET http://localhost:3000/api/personal/6237630be8a6495cea600cdb
 
 ###
 
@@ -10,21 +10,21 @@ POST http://localhost:3000/api/mascotas/
 Content-Type: application/json
 
 {
-    "tipo": "Perro",
-    "raza": "Puddle",
-    "nombre": "Fifi",
-    "sexo": "Macho",
-    "estatura": 1.6,
-    "ubicacion": "[392.2]"
+    "tipo": "Mono",
+    "raza": "Orangutan",
+    "nombre": "Pedro",
+    "sexo": "M",
+    "estatura": 1.23,
+    "ubicacion": [3.511815, -45.797119]
 }
 
 ### 
-DELETE http://localhost:3000/api/mascotas/62369e0c4d17d119e9c4f28f
+DELETE http://localhost:3000/api/mascotas/623d2cd6a021479edce5ab5b
 
 ### 
-PATCH  http://localhost:3000/api/mascotas/6236a26685897fb614c59c9d
+PATCH  http://localhost:3000/api/mascotas/623d2d25a021479edce5ab62
 Content-Type: application/json
 
 {
-    "nombre": "Sinbolas"
+    "ubicacion": [5.511815,-64.797119 ]
 }
