@@ -15,8 +15,39 @@ router.get("/", async (req, res)=>{
     })
 });
 
+router.get("/ubicaciones", (req, res)=>{
+    res.render(routename + "/ubicaciones.ejs");
+});
+
 router.get("/add", (req, res)=>{
     res.render(routename + "/form.ejs");
+});
+
+router.get("/get/:id", (req, res)=>{
+    axios.post(process.env.API_MASCOTAS, req.params.id)
+    .then((response)=>{
+        res.json(response.data);
+    }).catch((error)=>{
+        res.redirect("/mascotas");
+    })
+});
+
+router.post("/add", (req, res)=>{
+    datos = req.body;
+    if(req.body.ubicacion[0] == 'null'){
+        res.render(routename + "/form.ejs", {old: req.body});
+        return;
+    }
+    axios.post(process.env.API_MASCOTAS, req.body)
+    .then((response)=>{
+        if(response.status != 201){
+            res.redirect("/mascotas/add");
+        }else{
+            res.redirect("/mascotas/");
+        }
+    }).catch((error)=>{
+        res.redirect("/mascotas/add");
+    })
 });
 
 module.exports = router;

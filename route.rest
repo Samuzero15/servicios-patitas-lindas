@@ -19,7 +19,10 @@ Content-Type: application/json
 }
 
 ### 
-DELETE http://localhost:3000/api/mascotas/623d2cd6a021479edce5ab5b
+DELETE http://localhost:3000/api/mascotas/623d2cc7a021479edce5ab59
+
+###
+DELETE http://localhost:3000/api/mascotas/*
 
 ### 
 PATCH  http://localhost:3000/api/mascotas/623d2d25a021479edce5ab62

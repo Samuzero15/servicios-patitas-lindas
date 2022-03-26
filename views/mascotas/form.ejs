@@ -1,15 +1,60 @@
 
-<form action="/mascotas/post" method="post">
-    <input type="text" name="tipo" id="tipo">
-    <input type="text" name="raza" id="raza">
-    <input type="text" name="nombre" id="nombre">
-    <select name="sexo" id="sexo"></select>
-    <input type="number" name="estatura" id="estatura">
-    <div id="mapinput"></div>
-    <input type="hidden" name="ubicacion[0]">
-    <input type="hidden" name="ubicacion[1]">
+<form action="/mascotas/add" method="post">
+    <input type="hidden" autocomplete="off">
+    <label for="tipo"> Tipo de animal: </label>
+    <select name="tipo" id="tipo" >
+        <option value="Gato">Gato</option>
+        <option value="Perro">Perro</option>
+    </select>
+    <br>
+    <label for="raza"> Raza: </label>
+    <input type="text" name="raza" id="raza" required>
+    <br>
+    <label for="nombre"> Nombre: </label>
+    <input type="text" name="nombre" id="nombre" required>
+    <br>
+    <label for="sexo"> Sexo: </label>
+    <select name="sexo" id="sexo" >
+        <option value="M">Macho</option>
+        <option value="F">Hembra</option>
+    </select>
+    <br>
+    <label for="estatura">Estatura en cm: </label>
+    <input type="number" name="estatura" id="estatura" min="2.0" max="50.0" value="15.0">
+    <br>
+    <label for="mapinput">En donde lo encontraron?: </label>
+    <div id="mapinput" style="height: 300px;width: 300px;"></div>
+    <input type="hidden" name="ubicacion[]" id="lat" value="null">
+    <input type="hidden" name="ubicacion[]" id="lon" value="null">
     <div id="mapinput">
+    <br>
         
     </div>
     <button type="submit">Registrar mascota</button>
 </form>
+
+<link rel="stylesheet" href="/public/leaflet/leaflet.css"/>
+<script src="/public/leaflet/leaflet.js"></script>
+<script type="text/javascript" >
+    var latitud = document.getElementById("lat");
+    var longitud = document.getElementById("lon");
+
+    var map = L.map('mapinput').setView([6.511815, -65.797119], 4);
+
+    L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+    }).addTo(map);
+    //var marker = L.marker(m.ubicacion).addTo(map);
+    var marker = L.marker([latitud.value != "null" ? latitud.value : 0.0, longitud.value != "null"  ? longitud.value : 0.0])
+
+    function setUbicacion(e) {
+        var ubica = e.latlng;
+        if(ubica != null){
+            latitud.value = ubica.lat;
+            longitud.value = ubica.lng;
+            marker.setLatLng(e.latlng).addTo(map);
+        }
+    }
+    map.on("click", setUbicacion)
+
+</script>

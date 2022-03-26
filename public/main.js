@@ -16,6 +16,7 @@ const cargarMascotas = async () => {
   else{
     myJson.forEach(m => {
       //alert(m.ubicacion[0] + " , " + m.ubicacion[1]);
+      console.log(m);
       var marker = L.marker(m.ubicacion).addTo(map);
       var apopup = L.popup().setContent("¡Aqui encontramos a "+ m.nombre +"!");
       marker.bindPopup(apopup);

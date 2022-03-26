@@ -5,10 +5,11 @@ const app = express();
 const mongoose = require("mongoose");
 const axios = require('axios').default;
 const cors = require("cors");
+const oldinput = require("oldinput");
 
 app.set('view-engine', 'ejs');
 app.use('/public', express.static('public'));
-app.use(express.urlencoded({extended: false}));
+app.use(express.urlencoded({extended: true}));
 app.use(express.json());
 app.use(cors());
 
@@ -31,4 +32,4 @@ app.use("/api/mascotas", rutasApiMascotas);
 const rutasApiPersonal = require('./routes/api/personalApi');
 app.use("/api/personal", rutasApiPersonal);
 
-app.listen(3000, ()=> console.log("Server started bro"));
+app.listen(5000, ()=> console.log("Server started bro"));

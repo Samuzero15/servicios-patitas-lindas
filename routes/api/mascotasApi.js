@@ -1,4 +1,5 @@
 const express = require('express');
+const mascota = require('../../models/mascota');
 const router = express.Router();
 const Mascota = require('../../models/mascota');
 
@@ -18,6 +19,7 @@ router.get('/:id', getMascota, (req, res) => {
 });
 // Añadir mascota
 router.post('/', async (req, res) => {
+    console.log(req.body);
     datos = new Mascota({
         tipo: req.body.tipo,
         raza: req.body.raza,
@@ -46,8 +48,14 @@ router.patch('/:id',  getMascota, async (req, res) => {
 // Eliminar mascota
 router.delete('/:id', getMascota, async (req, res) => {
     try {
-        await res.mascota.remove();
-        res.json({message: "Mascota eliminada."});
+        if(req.params.id == "*"){
+            await Mascota.deleteMany();
+            res.json({message: "Mascotas eliminadas."});
+        }else{
+            await res.mascota.remove();
+            res.json({message: "Mascota eliminada."});
+        }
+        
     } catch (error) {
         res.status(500).json({message: error.message});
     }
@@ -65,6 +73,7 @@ function editarMascota(actual, edicion){
 
 async function getMascota(req, res, proceed) {
     let mascota;
+    if(req.params.id == "*") {proceed(); return;}
     try {
         mascota = await Mascota.findById(req.params.id);
         if(mascota == null){
