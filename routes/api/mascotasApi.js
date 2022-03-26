@@ -19,14 +19,15 @@ router.get('/:id', getMascota, (req, res) => {
 });
 // Añadir mascota
 router.post('/', async (req, res) => {
-    console.log(req.body);
+    //console.log(req.body);
     datos = new Mascota({
         tipo: req.body.tipo,
         raza: req.body.raza,
         nombre: req.body.nombre,
         sexo: req.body.sexo,
         estatura: req.body.estatura,
-        ubicacion: req.body.ubicacion
+        ubicacion: req.body.ubicacion,
+        encontrado_por: req.body.encontrado_por
     });
     try {
         res.status(201).json(await datos.save());
@@ -63,11 +64,13 @@ router.delete('/:id', getMascota, async (req, res) => {
 
 function editarMascota(actual, edicion){
     // (Si existe, usa este) ?? (Si es nulo, usa este)
-    actual.raza =       edicion.raza ?? actual.raza;
-    actual.nombre =     edicion.nombre ?? actual.nombre;
-    actual.sexo =       edicion.sexo ?? actual.sexo;
-    actual.estatura =   edicion.estatura ?? actual.estatura;
-    actual.ubicacion =  edicion.ubicacion ?? actual.ubicacion;
+    actual.tipo =           edicion.tipo ?? actual.tipo;
+    actual.raza =           edicion.raza ?? actual.raza;
+    actual.nombre =         edicion.nombre ?? actual.nombre;
+    actual.sexo =           edicion.sexo ?? actual.sexo;
+    actual.estatura =       edicion.estatura ?? actual.estatura;
+    actual.ubicacion =      edicion.ubicacion ?? actual.ubicacion;
+    actual.encontrado_por = edicion.encontrado_por ?? edicion.encontrado_por;
     return actual;
 }
 

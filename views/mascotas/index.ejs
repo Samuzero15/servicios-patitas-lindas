@@ -2,13 +2,23 @@
     Mascotas disponibles en la base de datos.
 </h1>
 
+<%if(messages.noti){%>
+<h3><%=messages.noti%></h3>
+<%}%>
+
 <a href="/mascotas/add">Añadir una nueva mascota</a> <br>
 <a href="/mascotas/ubicaciones">Ver todas las ubicaciones de los animales encontrados.</a> <br>
 <% mascotas.forEach((m) => { %>
-    <%=m.tipo%> 
-    <%=m.nombre%> 
+    <%=m.tipo%>  
+    <%=m.nombre%>
     <%=m.raza%> 
-    <%=m.fecha_encontrado%> 
     <%=m.sexo%> 
+    <a href="/mascotas/show/<%=m._id%>">Detalles</a>
+    <a href="/mascotas/edit/<%=m._id%>">Editar</a>
+    <form action="/mascotas/delete/<%=m._id%>" method="post" 
+        onsubmit="confirm('¿Seguro que quieres eliminar esta mascota? ¡Esta accion no se puede deshacer!')">
+        <input type="submit" value="Eliminar">
+    </form>
+    
     <br>
 <% }) %>

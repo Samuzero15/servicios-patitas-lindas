@@ -1,0 +1,42 @@
+
+<h1>Detalles de <%= mascota.nombre%></h1>
+
+<p>
+    <b>Tipo:</b>   <%= mascota.tipo %> <br>
+    <b>Raza: </b>  <%= mascota.raza %> <br>
+    <b>Nombre:</b> <%= mascota.nombre %> <br>
+    <b>Estatura: </b> <%= mascota.estatura %> centimetros <br>
+    <b>Sexo:</b> <%= mascota.sexo == "M" ? "Macho" : "Hembra" %> <br>
+    <b>Encontrado por:</b> <%= mascota.encontrado_por %> <br>
+    <div id="map" style="height: 300px; width: 300px;">
+        <div style="display: none;" id="lat"><%= mascota.ubicacion[0] %></div>
+        <div style="display: none;" id="lon"><%= mascota.ubicacion[1] %></div>
+    </div>
+    <b>Ver historial clinico (WIP)</b> <br>
+    <b>Ver posibles dueños (WIP)</b> <br>
+    <b>Dueño actual (WIP)</b> <br>
+</p> 
+<div style="display: none;" id="nomb"><%=mascota.nombre%></div>
+<div style="display: none;" id="enco"><%=mascota.encontrado_por%></div>
+
+<link rel="stylesheet" href="/public/leaflet/leaflet.css"/>
+<script src="/public/leaflet/leaflet.js"></script>
+<script type="text/javascript">
+    var latitud = document.getElementById("lat").innerHTML;
+    var longitud = document.getElementById("lon").innerHTML;
+    var nombre = document.getElementById("nomb").innerHTML;
+    var encontrado_por = document.getElementById("enco").innerHTML;
+
+    var map = L.map('map').setView([6.511815, -65.797119], 4);
+
+    L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+    }).addTo(map);
+    //var marker = L.marker(m.ubicacion).addTo(map);
+    var marker = L.marker([latitud, longitud]).addTo(map);
+
+    var apopup = L.popup({closeButton : false, autoClose: false})
+    .setContent("¡Aqui fue donde "+ nombre +" ha sido rescatado por "+ encontrado_por +"!");
+    marker.bindPopup(apopup);
+    marker.openPopup();
+</script>

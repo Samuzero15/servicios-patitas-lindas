@@ -5,13 +5,23 @@ const app = express();
 const mongoose = require("mongoose");
 const axios = require('axios').default;
 const cors = require("cors");
-const oldinput = require("oldinput");
+const oldInput = require("old-input");
+const session = require("express-session");
+const flash = require("express-flash");
 
 app.set('view-engine', 'ejs');
 app.use('/public', express.static('public'));
 app.use(express.urlencoded({extended: true}));
 app.use(express.json());
 app.use(cors());
+app.use(flash());
+
+app.use(session({
+    secret: process.env.SESSION_SECRET,
+    resave: true,
+    saveUninitialized: false
+}))
+app.use(oldInput);
 
 mongoose.connect(process.env.MONGODB_URL, {useNewUrlParser: true});
 const db = mongoose.connection;

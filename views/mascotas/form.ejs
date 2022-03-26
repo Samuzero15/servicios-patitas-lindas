@@ -1,31 +1,64 @@
 
+<%if (messages.error) {%>
+    <%=messages.error%>
+<%}%>
+
+<%if (modo == "add") {%>
 <form action="/mascotas/add" method="post">
+<%} else {%>
+<form action="/mascotas/edit/<%=edit._id%>" method="post">
+<%}%>
     <input type="hidden" autocomplete="off">
     <label for="tipo"> Tipo de animal: </label>
     <select name="tipo" id="tipo" >
-        <option value="Gato">Gato</option>
-        <option value="Perro">Perro</option>
+        <option value="Gato" 
+            <%= (oldInput.value('tipo') ?? (locals.edit ? edit.tipo : null)) == 'Gato' ? 'selected' : '' %>  
+            >Gato</option>
+        <option value="Perro" 
+            <%= (oldInput.value('tipo') ?? (locals.edit ? edit.tipo : null)) == 'Perro' ? 'selected' : '' %>
+            >Perro</option>
     </select>
     <br>
     <label for="raza"> Raza: </label>
-    <input type="text" name="raza" id="raza" required>
+    <input type="text" name="raza" id="raza" value="<%= (oldInput.value('raza') ?? (locals.edit ? edit.raza : '')) %>" required>
     <br>
     <label for="nombre"> Nombre: </label>
-    <input type="text" name="nombre" id="nombre" required>
+    <input type="text" name="nombre" id="nombre"  value="<%= (oldInput.value('nombre') ?? (locals.edit ? edit.nombre : '')) %>" required>
     <br>
     <label for="sexo"> Sexo: </label>
     <select name="sexo" id="sexo" >
-        <option value="M">Macho</option>
-        <option value="F">Hembra</option>
+        <option value="M" <%= (oldInput.value('sexo') ?? (locals.edit ? edit.sexo : null)) == 'M' ? 'selected' : '' %>>Macho</option>
+        <option value="F" <%= (oldInput.value('sexo') ?? (locals.edit ? edit.sexo : null)) == 'F' ? 'selected' : '' %>>Hembra</option>
     </select>
     <br>
     <label for="estatura">Estatura en cm: </label>
-    <input type="number" name="estatura" id="estatura" min="2.0" max="50.0" value="15.0">
+    <input type="number" name="estatura" id="estatura" min="2.0" max="50.0" 
+        value="<%= (oldInput.value('estatura') ?? (locals.edit ? edit.estatura : null)) ?? 15.0 %>">
+    <br>
+    <label for="encontrado_por"> ¿Quien lo encontró?: </label>
+    <input type="text" name="encontrado_por" id="encontrado_por"  
+    value="<%= (oldInput.value('encontrado_por') ?? (locals.edit ? edit.encontrado_por : '')) %>" required>
     <br>
     <label for="mapinput">En donde lo encontraron?: </label>
     <div id="mapinput" style="height: 300px;width: 300px;"></div>
-    <input type="hidden" name="ubicacion[]" id="lat" value="null">
-    <input type="hidden" name="ubicacion[]" id="lon" value="null">
+
+    <% 
+        var old_ubica = oldInput.value('ubicacion');
+        var old_latitud = 'null'; 
+        var old_longitud = 'null'; 
+        var input_lat;
+        var input_lng;
+        if (old_ubica != null){ 
+            input_lat = old_ubica.split(",")[0];
+            input_lng = old_ubica.split(",")[1];
+        } else if(locals.edit){
+            input_lat = edit.ubicacion[0];
+            input_lng = edit.ubicacion[1];
+        }
+    %>
+
+    <input type="hidden" name="ubicacion[]" id="lat" value="<%= input_lat %>">
+    <input type="hidden" name="ubicacion[]" id="lon" value="<%= input_lng %>">
     <div id="mapinput">
     <br>
         
@@ -39,14 +72,16 @@
     var latitud = document.getElementById("lat");
     var longitud = document.getElementById("lon");
 
-    var map = L.map('mapinput').setView([6.511815, -65.797119], 4);
+    var map = L.map('mapinput').setView([6.511815, -65.797119], 9);
 
     L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
         attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
     }).addTo(map);
     //var marker = L.marker(m.ubicacion).addTo(map);
     var marker = L.marker([latitud.value != "null" ? latitud.value : 0.0, longitud.value != "null"  ? longitud.value : 0.0])
-
+    if(latitud.value != 'null'){
+        marker.addTo(map);
+    }
     function setUbicacion(e) {
         var ubica = e.latlng;
         if(ubica != null){
