@@ -1,4 +1,4 @@
-GET http://localhost:5000/api/mascotas/
+GET http://localhost:5000/api/personal/cargos
 
 ###
 
@@ -22,7 +22,7 @@ Content-Type: application/json
 DELETE http://localhost:5000/api/mascotas/623d2cc7a021479edce5ab59
 
 ###
-DELETE http://localhost:5000/api/mascotas/*
+DELETE http://localhost:5000/api/personal/*
 
 ### 
 PATCH  http://localhost:5000/api/mascotas/623d2d25a021479edce5ab62

@@ -41,8 +41,13 @@ router.patch("/:id", getEmpleado, async (req,res) => {
 // Eliminar empleado
 router.delete("/:id", getEmpleado, async (req,res) => {
     try {
-        await res.empleado.remove();
+        if(req.params.id == "*"){
+            await Empleado.deleteMany();
+            res.json({message: "Empleados eliminados."});
+        }else{
+            await res.empleado.remove();
         res.json({message: "Empleado eliminado."});
+        }
     } catch (error) {
         res.status(500).json({message: error.message});
     }
@@ -58,6 +63,7 @@ function updateEmpleado(actual, cambios){
 
 async function getEmpleado(req, res, proceed){
     let empleado;
+    if(req.params.id == "*") {proceed(); return;}
     try {
         empleado = await Empleado.findById(req.params.id);
         if(empleado == null){

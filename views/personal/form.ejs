@@ -1,0 +1,31 @@
+<%if (messages.error) {%>
+    <%=messages.error%>
+<%}%>
+
+<%if (modo == "add") {%>
+<form action="/personal/add" method="post">
+<%} else {%>
+<form action="/personal/edit/<%=edit._id%>" method="post">
+<%}%>
+    <input type="hidden" autocomplete="off">
+    <label for="cedula"> Cedula de identidad: </label>
+    <input type="text" name="cedula" id="cedula" value="<%= (oldInput.value('cedula') ?? (locals.edit ? edit.cedula : '')) %>" required>
+    <br>
+    <label for="nombres"> Nombres del empleado: </label>
+    <input type="text" name="nombres" id="nombres"  value="<%= (oldInput.value('nombres') ?? (locals.edit ? edit.nombres : '')) %>" required>
+    <br>
+    <label for="apellidos"> Apellidos del empleado: </label>
+    <input type="text" name="apellidos" id="apellidos"  value="<%= (oldInput.value('apellidos') ?? (locals.edit ? edit.apellidos : '')) %>" required>
+    <br>
+    <label for="cargo"> Cargo en la empresa: </label>
+    <% var input_cargo = oldInput.value('cargo') ?? (locals.edit ? edit.cargo : null); %> 
+    <select name="cargo" id="cargo">
+        <%for(cargo in cargos_nombres){ %>
+            <option value="<%=cargo%>" <%= input_cargo == cargo ? 'selected' : '' %>> <%=cargos_nombres[cargo]%> </option>
+        <%}%>
+    </select>
+    <br>
+        
+    </div>
+    <button type="submit">Registrar empleado</button>
+</form>

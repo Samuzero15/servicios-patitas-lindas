@@ -1,19 +1,19 @@
 const mongoose = require('mongoose');
 
 const entradaHistorialMedicoSchema = mongoose.Schema({
-    fecha: {
-        type: "Date",
-        default: Date.now()
-    },mascota: {
+    mascota: {
         type: "ObjectId",
         default: {}
-    },titulo_evento: {
+    },fecha: {
+        type: "Date",
+        default: Date.now()
+    },descripcion:{
         type: "String",
         required: true
-    },desc_evento:{
+    },evento: {
         type: "String",
         required: true
-    },medico_tratante: {
+    },medico: {
         type: "ObjectId",
         default: null
     }

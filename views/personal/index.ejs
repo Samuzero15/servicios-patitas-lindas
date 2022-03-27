@@ -2,11 +2,18 @@
     Personal disponible en la base de datos
 </h1>
 
-<a href="/personal/add">Añadir una nuevo empleado</a>
+<a href="/personal/add">Añadir un nuevo empleado al personal</a><br>
 
 <% personal.forEach((p) => { %>
+    <%= p.cedula%>
     <%= p.nombres%>
     <%= p.apellidos%>
-    <%= p.cargo%>
+    <%= cargos_nombres[p.cargo] %>
+    <a href="/personal/show/<%=p._id%>">Detalles</a>
+    <a href="/personal/edit/<%=p._id%>">Editar</a>
+    <form action="/personal/delete/<%=p._id%>" method="post" 
+        onsubmit="confirm('¿Seguro que quieres eliminar a este empleado? ¡Esta accion no se puede deshacer!')">
+        <input type="submit" value="Eliminar">
+    </form>
     <br>
 <% }) %>

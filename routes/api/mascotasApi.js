@@ -1,5 +1,4 @@
 const express = require('express');
-const mascota = require('../../models/mascota');
 const router = express.Router();
 const Mascota = require('../../models/mascota');
 

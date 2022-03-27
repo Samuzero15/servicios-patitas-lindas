@@ -37,6 +37,8 @@ app.get("/mapa", (req, res)=>{res.render('ejemplo_mapa.ejs')});
 app.use("/mascotas", require('./routes/ctrl/mascotasCtrl'));
 app.use("/personal", require('./routes/ctrl/personalCtrl'));
 
+const rutasApiHistoriales = require('./routes/api/historialesApi');
+app.use("/api/historiales", rutasApiHistoriales);
 const rutasApiMascotas = require('./routes/api/mascotasApi');
 app.use("/api/mascotas", rutasApiMascotas);
 const rutasApiPersonal = require('./routes/api/personalApi');
