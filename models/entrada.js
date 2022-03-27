@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 const entradaHistorialMedicoSchema = mongoose.Schema({
     mascota: {
         type: "ObjectId",
-        default: {}
+        required: true
     },fecha: {
         type: "Date",
         default: Date.now()

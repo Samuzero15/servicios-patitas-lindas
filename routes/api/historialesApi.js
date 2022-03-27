@@ -32,7 +32,7 @@ router.post("/:mascota", getMascota, async (req, res) => {
     res.mascota.historial.push(datosEntrada._id);
     try {
         await res.mascota.save();
-        res.status(201).json(await datosEmpleado.save());
+        res.status(201).json(await datosEntrada.save());
     } catch (error) {
         res.status(400).json({message: error.message});
     }
@@ -44,11 +44,13 @@ router.get("/:mascota/:id", getMascota, getEntrada, (req, res) => {
 });
 
 // Editar la entrada del historial.
-router.patch("/:mascota/:id", getMascota, getEntrada, (req, res) => {
+router.patch("/:mascota/:id", getMascota, getEntrada, async (req, res) => {
     const cambiosEntrada = editar(res.entrada, req.body);
     try {
-        res.status(202).json(await  cambiosEntrada.save());
+        console.log(cambiosEntrada);
+        res.status(202).json(await cambiosEntrada.save());
     } catch (error) {
+        console.log("sex");
         res.status(400).json({message: error.message});
     }
 });
@@ -56,7 +58,10 @@ router.patch("/:mascota/:id", getMascota, getEntrada, (req, res) => {
 // Eliminar la entrada del historial.
 router.delete("/:mascota/:id", getMascota, getEntrada, async (req, res) => {
     try {
-        res.mascota.historial.filter((v) => {v != res.entrada._id});
+        res.mascota.historial.filter((v) => {
+            console.log(v);
+            return v != res.entrada._id;
+        });
         await res.entrada.remove();
         res.json({message: "Entrada eliminada."});
     } catch (error) {
@@ -76,7 +81,8 @@ async function getMascota(req, res, proceed) {
     let mascota;
     if(req.params.id == "*") {proceed(); return;}
     try {
-        mascota = await Mascota.findById(req.params.id);
+        mascota = await Mascota.findById(req.params.mascota);
+        console.log(mascota);
         if(mascota == null){
             return res.status(404).json({message: "La mascota no existe en la base de datos."});
         }

@@ -1,33 +1,50 @@
-GET http://localhost:5000/api/personal/cargos
+GET http://localhost:5000/api/mascotas/
 
 ###
 
-GET http://localhost:5000/api/personal/6237630be8a6495cea600cdb
+GET http://localhost:5000/api/mascotas/623fc60e80083aa4401a94b9
+###
 
+GET http://localhost:5000/api/historiales/623fc60e80083aa4401a94b9
+###
+
+GET http://localhost:5000/api/historiales/623fc60e80083aa4401a94b9/623fc67c80083aa4401a94d1
 ###
 
 POST http://localhost:5000/api/mascotas/
 Content-Type: application/json
 
 {
-    "tipo": "Mono",
-    "raza": "Orangutan",
-    "nombre": "Pedro",
-    "sexo": "M",
-    "estatura": 1.23,
-    "ubicacion": [3.511815, -45.797119]
+    "tipo": "Estoy",
+    "raza": "Estoy",
+    "nombre": "Estoy",
+    "sexo": "Estoy",
+    "estatura": 6969.0,
+    "ubicacion": [6.0, -69.0],
+    "encontrado_por": "Drogao"
+}
+
+###
+
+POST http://localhost:5000/api/historiales/623fc60e80083aa4401a94b9
+Content-Type: application/json
+
+{
+    "descripcion":   "Vacuna contra el covid.",
+    "evento":        "Vacunacion",
+    "medico":        "623f6a5531ad917490f21171"
 }
 
 ### 
 DELETE http://localhost:5000/api/mascotas/623d2cc7a021479edce5ab59
 
 ###
-DELETE http://localhost:5000/api/personal/*
+DELETE http://localhost:5000/api/historiales/623fc60e80083aa4401a94b9/623fc67c80083aa4401a94d1
 
 ### 
-PATCH  http://localhost:5000/api/mascotas/623d2d25a021479edce5ab62
+PATCH  http://localhost:5000/api/historiales/623fc60e80083aa4401a94b9/623fc67c80083aa4401a94d1
 Content-Type: application/json
 
 {
-    "ubicacion": [5.511815,-64.797119 ]
+    "evento": "eventualmente x 2."
 }
