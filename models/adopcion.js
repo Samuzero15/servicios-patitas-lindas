@@ -33,4 +33,4 @@ const adopcionSchema = mongoose.Schema({
     }
 });
 
-module.exports = mongoose.model("Adopciones", mascotaSchema);
+module.exports = mongoose.model("Adopciones", adopcionSchema);
