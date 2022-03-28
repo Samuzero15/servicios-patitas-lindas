@@ -2,13 +2,17 @@ GET http://localhost:5000/api/mascotas/
 
 ###
 
-GET http://localhost:5000/api/mascotas/623fc60e80083aa4401a94b9
+GET http://localhost:5000/api/historiales/
+
 ###
 
-GET http://localhost:5000/api/historiales/623fc60e80083aa4401a94b9
+GET http://localhost:5000/api/mascotas/623fcc7073916b6d63612e36
 ###
 
-GET http://localhost:5000/api/historiales/623fc60e80083aa4401a94b9/623fc67c80083aa4401a94d1
+GET http://localhost:5000/api/historiales/623fcc7073916b6d63612e36
+###
+
+GET http://localhost:5000/api/historiales/623fcc7073916b6d63612e36/623fcc9973916b6d63612e40
 ###
 
 POST http://localhost:5000/api/mascotas/
@@ -26,7 +30,7 @@ Content-Type: application/json
 
 ###
 
-POST http://localhost:5000/api/historiales/623fc60e80083aa4401a94b9
+POST http://localhost:5000/api/historiales/623fd10dad966e966ee66be4
 Content-Type: application/json
 
 {
@@ -36,15 +40,22 @@ Content-Type: application/json
 }
 
 ### 
-DELETE http://localhost:5000/api/mascotas/623d2cc7a021479edce5ab59
+DELETE http://localhost:5000/api/historiales/*/*
 
 ###
-DELETE http://localhost:5000/api/historiales/623fc60e80083aa4401a94b9/623fc67c80083aa4401a94d1
+DELETE http://localhost:5000/api/mascotas/*
+
 
 ### 
-PATCH  http://localhost:5000/api/historiales/623fc60e80083aa4401a94b9/623fc67c80083aa4401a94d1
+DELETE http://localhost:5000/api/mascotas/623fc60e80083aa4401a94b9
+
+###
+DELETE http://localhost:5000/api/historiales/623fd10dad966e966ee66be4/623fd114ad966e966ee66be7
+
+### 
+PATCH  http://localhost:5000/api/historiales/623fcc7073916b6d63612e36/623fcc9973916b6d63612e40
 Content-Type: application/json
 
 {
-    "evento": "eventualmente x 2."
+    "evento": "eventualmente sadasdas."
 }

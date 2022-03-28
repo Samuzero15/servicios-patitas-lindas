@@ -1,0 +1,31 @@
+<h1>
+    Historial medico de <%= mascota.nombre %>
+</h1>
+
+<a href="/historiales/<%=mascota._id%>/add">Añadir una entrada al historial</a><br>
+
+<% if(historial.length > 0) { %>
+<table>
+    <tr>
+        <th>Fecha</th><th>Descripcion</th><th>Evento</th><th>Realizado por</th><th>Acciones:</th>
+    </tr>
+    
+    
+    <%historial.forEach((e)=>{%>
+    <tr>
+        <td><%=e.fecha%></td>
+        <td><%=e.descripcion%> </td>
+        <td><%=eventos[e.evento]%></td>
+        <%var medico = personal.find(p => p._id == e.medico);%>
+        <td> <%=medico.nombres%> <%=medico.apellidos%> </td>
+        <td>
+            <a href="/historiales/<%=mascota._id%>/edit/<%=e._id%>">Editar</a>
+            <a href="#">Eliminar</a>
+        </td>
+    </tr>
+    <%});%>
+</table>
+
+<%} else{ %> 
+    <h3> No hay nada en el historial de este animal.</h3>
+<% } %> 

@@ -1,0 +1,43 @@
+
+<%if (messages.error) {%>
+    <%=messages.error%>
+<%}%>
+
+<%if (modo == "add") {%>
+<form action="/historiales/<%=mascota._id%>/add" method="post">
+<%} else {%>
+<form action="/historiales/<%=mascota._id%>/edit/<%=edit._id%>" method="post">
+<%}%>
+    <input type="hidden" autocomplete="off">
+    <label for="descripcion"> Descripcion del evento: </label>
+    <input type="text" name="descripcion" id="descripcion" required
+        value="<%= (oldInput.value('descripcion') ?? (locals.edit ? edit.descripcion : ''))%>">
+    <br>
+    <label for="evento"> Tipo de evento realizado: </label>
+    <% var input_evento = oldInput.value('evento') ?? (locals.edit ? edit.evento : null); %> 
+    <select name="evento" id="evento" >
+        <%for(e in eventos) { %>
+            <option value="<%=e%>" <%= input_evento == e ? 'selected' : '' %>> 
+                <%=eventos[e]%>
+            </option>
+        <%}; %>
+    </select>
+    <br>
+    <label for="medico"> Empleado encargado de este cambio: </label>
+    <% var input_medico = oldInput.value('medico') ?? (locals.edit ? edit.medico : null); %> 
+    <select name="medico" id="medico" >
+        <%personal.forEach(emp => { %>
+            <option value="<%=emp._id%>" <%= input_medico == emp._id ? 'selected' : '' %>> 
+                <%=emp.apellidos%> <%=emp.nombres%> 
+            </option>
+        <%}); %>
+    </select>
+    <br>
+    <button type="submit">
+        <%if (modo == "add") {%>
+            Añadir al historial
+        <%} else {%>
+            Guardar cambios
+        <%}%>
+    </button>
+</form>

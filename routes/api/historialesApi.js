@@ -4,6 +4,21 @@ const Entrada = require('../../models/entrada');
 const Mascota = require('../../models/mascota');
 
 // Obten todas las entradas del todos los historiales.
+
+router.get("/eventos", async (req, res) => {
+    try {
+        res.json({
+            "D": "Diagnostico",
+            "T": "Tratamiento",
+            "C": "Cuidado",
+            "V": "Vacuna",
+            "E": "Entrenamiento"
+        });
+    } catch (error) {
+        res.status(500).json({message: error.message});
+    }
+});
+
 router.get("/", async (req, res) => {
     try {
         res.json(await Entrada.find());
@@ -58,16 +73,25 @@ router.patch("/:mascota/:id", getMascota, getEntrada, async (req, res) => {
 // Eliminar la entrada del historial.
 router.delete("/:mascota/:id", getMascota, getEntrada, async (req, res) => {
     try {
-        res.mascota.historial.filter((v) => {
-            console.log(v);
-            return v != res.entrada._id;
-        });
-        await res.entrada.remove();
-        res.json({message: "Entrada eliminada."});
+        if(req.params.mascota == "*"){
+            await Entrada.deleteMany();
+            res.json({message: "Entradas de todos los historiales eliminados."});
+        }else{
+            let historial_nuevo = res.mascota.historial.filter(v => {
+                return !v.equals(res.entrada._id);
+            });
+            console.log(historial_nuevo);
+            res.mascota.historial = historial_nuevo;
+            await res.mascota.save();
+            await res.entrada.remove();
+            res.json({message: "Entrada eliminada."});
+        }
+        
     } catch (error) {
         res.status(500).json({message: error.message});
     }
 });
+
 
 function editar(actual, edicion){
     // (Si existe, usa este) ?? (Si es nulo, usa este)
@@ -82,7 +106,6 @@ async function getMascota(req, res, proceed) {
     if(req.params.id == "*") {proceed(); return;}
     try {
         mascota = await Mascota.findById(req.params.mascota);
-        console.log(mascota);
         if(mascota == null){
             return res.status(404).json({message: "La mascota no existe en la base de datos."});
         }
