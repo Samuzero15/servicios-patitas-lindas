@@ -56,8 +56,10 @@ router.post("/:mascota/add", (req, res)=>{
     axios.post(historialesApi_endpoint + req.params.mascota, req.body)
     .then((response)=>{
         if(response.status != 201){
+            req.flash("error", "Algo salio mal! (" + response.status +")");
             res.redirect("/historiales/"+ req.params.mascota + "/add");
         }else{
+            req.flash("noti", "Entrada al historial añadida!");
             res.redirect("/historiales/"+ req.params.mascota);
         }
     }).catch((e)=>{
@@ -97,10 +99,10 @@ router.post("/:mascota/edit/:id", (req, res)=>{
     .then((response)=>{
         if(response.status != 202){
             req.flash("error","Algo salio mal! ("+response.status+")");
-            res.redirect("/historial/" + req.params.mascota + "/edit/" + req.params.id);
+            res.redirect("/historiales/" + req.params.mascota + "/edit/" + req.params.id);
         }else{
-            req.flash("noti","Editado con exito!");
-            res.redirect("/historial/" + req.params.mascota);
+            req.flash("noti", "Entrada al historial editada!");
+            res.redirect("/historiales/" + req.params.mascota);
         }
     }).catch((error)=>{
         req.flash("error", error);
@@ -108,17 +110,18 @@ router.post("/:mascota/edit/:id", (req, res)=>{
     })
 });
 
-/*
+
 // Eliminar entrada
-router.post("/delete/:id", (req, res) => {
-    axios.delete(api_endpoint + req.params.id)
+router.post("/:mascota/delete/:id", (req, res) => {
+    axios.delete(historialesApi_endpoint + req.params.mascota + "/" + req.params.id)
     .then((response)=>{
         //res.json(response.data);
         req.flash("noti",response.data.message);
-        res.redirect("/personal");
+        res.redirect("/historiales/"+ req.params.mascota);
     }).catch((error)=>{
-        res.redirect("/personal");
+        req.flash("error", error);
+        return res.redirect("/");
     })
 });
-*/
+
 module.exports = router;

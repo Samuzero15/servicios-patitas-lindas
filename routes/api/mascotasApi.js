@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const Mascota = require('../../models/mascota');
+const Entrada = require('../../models/entrada');
 
 // Todas las mascotas
 router.get('/', async (req, res) => {
@@ -49,9 +50,11 @@ router.patch('/:id',  getMascota, async (req, res) => {
 router.delete('/:id', getMascota, async (req, res) => {
     try {
         if(req.params.id == "*"){
+            await Entrada.deleteMany();
             await Mascota.deleteMany();
             res.json({message: "Mascotas eliminadas."});
         }else{
+            await Entrada.deleteMany({mascota: res.mascota.id});
             await res.mascota.remove();
             res.json({message: "Mascota eliminada."});
         }
@@ -77,6 +80,7 @@ async function getMascota(req, res, proceed) {
     let mascota;
     if(req.params.id == "*") {proceed(); return;}
     try {
+        
         mascota = await Mascota.findById(req.params.id);
         if(mascota == null){
             return res.status(404).json({message: "La mascota no existe en la base de datos."});

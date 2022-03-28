@@ -80,7 +80,6 @@ router.delete("/:mascota/:id", getMascota, getEntrada, async (req, res) => {
             let historial_nuevo = res.mascota.historial.filter(v => {
                 return !v.equals(res.entrada._id);
             });
-            console.log(historial_nuevo);
             res.mascota.historial = historial_nuevo;
             await res.mascota.save();
             await res.entrada.remove();

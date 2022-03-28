@@ -3,7 +3,10 @@
 </h1>
 
 <a href="/historiales/<%=mascota._id%>/add">Añadir una entrada al historial</a><br>
-
+<a href="/mascotas/show/<%=mascota._id%>">Regresar a detalles de mascota</a><br>
+<%if(messages.noti){%>
+    <h3><%=messages.noti%></h3>
+<%}%>
 <% if(historial.length > 0) { %>
 <table>
     <tr>
@@ -20,7 +23,10 @@
         <td> <%=medico.nombres%> <%=medico.apellidos%> </td>
         <td>
             <a href="/historiales/<%=mascota._id%>/edit/<%=e._id%>">Editar</a>
-            <a href="#">Eliminar</a>
+            <form action="/historiales/<%=mascota._id%>/delete/<%=e._id%>" method="post" 
+                onsubmit="confirm('¿Seguro que quieres eliminar esta entrada? ¡Esta accion no se puede deshacer!')">
+                <input type="submit" value="Eliminar">
+            </form>
         </td>
     </tr>
     <%});%>

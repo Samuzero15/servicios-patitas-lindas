@@ -38,6 +38,8 @@ app.use("/mascotas", require('./routes/ctrl/mascotasCtrl'));
 app.use("/historiales", require('./routes/ctrl/historialesCtrl'));
 app.use("/personal", require('./routes/ctrl/personalCtrl'));
 
+const rutasApiAdopciones = require('./routes/api/adopcionesApi');
+app.use("/api/adopciones", rutasApiAdopciones);
 const rutasApiHistoriales = require('./routes/api/historialesApi');
 app.use("/api/historiales", rutasApiHistoriales);
 const rutasApiMascotas = require('./routes/api/mascotasApi');

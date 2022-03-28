@@ -6,7 +6,7 @@ const adopcionSchema = mongoose.Schema({
         required: true,
         default: Date.now()
     },
-    mascotaAdoptada: {
+    mascota: { // mascota
         type: "ObjectId",
         required: true,
         default: null
@@ -23,10 +23,14 @@ const adopcionSchema = mongoose.Schema({
         type: "String",
         required: true
     },
-    supervisadoPor:{
+    supervisadoPor:{ // empleado
         type: "ObjectId",
         default: null
-    }   
+    },
+    estado:{
+        type: "String",
+        required: true
+    }
 });
 
 module.exports = mongoose.model("Adopciones", mascotaSchema);
