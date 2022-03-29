@@ -11,6 +11,7 @@
     Añadir un nuevo empleado al personal
 </a> 
 <hr>
+<% if(personal.length > 0) { %>
 <table class="table table-striped table-hover">
     <thead>
         <tr>
@@ -40,6 +41,9 @@
 <% }) %>
     </tbody>
 </table>
+<% } else { %> 
+    <h3>No hay ningun personal registrado en la base de datos</h3>
+<% } %>    
 
 
 <%- include("../footer") %> 
