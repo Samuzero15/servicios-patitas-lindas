@@ -19,9 +19,11 @@
     <b><a href="/historiales/<%= mascota._id%>">Ver historial clinico</a></b> <br>
     <b><a href="/pos_duenos/<%= mascota._id%>">Ver posibles dueños</a></b> <br>
     <b>Dueño actual:</b> 
-    <% console.log(dueno) %> 
+    
     <% if(dueno == null) { %> (Desconocido) 
-        <%} else { %> <%= dueno.nombres%> <%= dueno.apellidos%> <%} %> 
+        <%} else { %>
+            <% console.log(dueno) %> 
+             <%= dueno.nombres%> <%= dueno.apellidos%> <%} %> 
     
     <br>
 </p> 
