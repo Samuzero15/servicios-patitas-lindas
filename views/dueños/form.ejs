@@ -1,0 +1,47 @@
+
+<%- include("../header", {seccion: "Posibles Dueños", opciones: [
+{link: "/mascotas", label: "Mascotas", activo: true},
+{link: "/adopciones", label: "Adopciones"},
+{link: "/personal", label: "Personal"} ]})%>
+
+<%if (messages.error) {%>
+    <%=messages.error%>
+<%}%>
+
+<%if (modo == "add") {%>
+    <h1>Agregar un posible dueño de la mascota</h1>
+<form action="/pos_duenos/<%=mascota._id%>/add" method="post">
+<%} else {%>
+    <h1>Editar el posible dueño de la mascota</h1>
+<form action="/pos_duenos/<%=mascota._id%>/edit/<%=edit._id%>" method="post">
+<%}%>
+    <input type="hidden" autocomplete="off">
+
+    <label for="cedula"> Cedula: </label>
+    <input type="text" name="cedula" id="cedula" required
+        value="<%= (oldInput.value('cedula') ?? (locals.edit ? edit.cedula : ''))%>">
+    <br>
+
+    <label for="nombres"> Nombres: </label>
+    <input type="text" name="nombres" id="nombres" required
+        value="<%= (oldInput.value('nombres') ?? (locals.edit ? edit.nombres : ''))%>">
+    <br>
+
+    <label for="apellidos">  Apellidos: </label>
+    <input type="text" name="apellidos" id="apellidos" required
+        value="<%= (oldInput.value('apellidos') ?? (locals.edit ? edit.apellidos : ''))%>">
+    <br>
+    
+    <label for="telefono">  Telefono de contacto: </label>
+    <input type="text" name="telefono" id="telefono" required
+        value="<%= (oldInput.value('telefono') ?? (locals.edit ? edit.telefono : ''))%>">
+    <br>
+
+    <button type="submit">
+        <%if (modo == "add") {%>
+            Añadir como posible dueño
+        <%} else {%>
+            Guardar cambios
+        <%}%>
+    </button>
+</form>

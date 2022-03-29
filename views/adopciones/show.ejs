@@ -1,0 +1,18 @@
+<%- include("../header", {seccion: "Detalles del registro de adopción.", opciones: [
+{link: "/mascotas", label: "Mascotas"},
+{link: "/adopciones", label: "Adopciones",  activo: true},
+{link: "/personal", label: "Personal"} ]})%>
+
+<h1>Detalles del registro de adopcion</h1>
+
+<a href="/adopciones/">Regresar al registro de adopciones</a>
+
+<p>
+    <b>Mascota a adoptar:</b> <%=mascota.nombre%> <br>
+    <b>Cedula del Adoptivo:</b> <%=adopcion.cedula%> <br>
+    <b>Nombre completo de la persona Adoptiva:</b> <%=adopcion.nombres%> <%=adopcion.apellidos%><br>
+    <b>Responsable de esta adopcion:</b> <%=responsable.nombres%> <%=responsable.apellidos%>  <br>
+    <b>Estado de la adopción: </b> <%=estados[adopcion.estado]%> <br>
+</p> 
+
+<%- include("../footer")%>

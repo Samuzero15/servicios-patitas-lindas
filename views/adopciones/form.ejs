@@ -1,0 +1,83 @@
+<%- include("../header", {seccion: "Procesos de Adopciones", opciones: [
+{link: "/mascotas", label: "Mascotas"},
+{link: "/adopciones", label: "Adopciones",  activo: true},
+{link: "/personal", label: "Personal"} ]})%>
+
+<%if (messages.error) {%>
+    <%=messages.error%>
+<%}%>
+
+
+
+<%if (modo == "add") {%>
+    <h1>
+        Registrar un nuevo proceso de adopción
+    </h1>
+<form action="/adopciones/add" method="post">
+<%} else {%>
+    <h1>
+        Editar un proceso de adopción
+    </h1>
+<form action="/adopciones/edit/<%=edit._id%>" method="post">
+<%}%>
+    <input type="hidden" autocomplete="off">
+
+    <label for="cedula"> Cedula de la persona Adoptiva: </label>
+    <input type="text" name="cedula" id="cedula" required
+        value="<%= (oldInput.value('cedula') ?? (locals.edit ? edit.cedula : ''))%>">
+    <br>
+
+    <label for="nombres"> Nombre de la persona Adoptiva: </label>
+    <input type="text" name="nombres" id="nombres" required
+        value="<%= (oldInput.value('nombres') ?? (locals.edit ? edit.nombres : ''))%>">
+    <br>
+
+    <label for="apellidos"> Apellido de la persona Adoptiva: </label>
+    <input type="text" name="apellidos" id="apellidos" required
+        value="<%= (oldInput.value('apellidos') ?? (locals.edit ? edit.apellidos : ''))%>">
+    <br>
+
+    <label for="mascota"> Mascota a adoptar: </label>
+    <% var input_mascota = oldInput.value('mascota') ?? (locals.edit ? edit.mascota : null); %> 
+    <select name="mascota" id="mascota" >
+        <%mascotas.forEach(m => { %>
+            <%console.log(m)%>
+            <option value="<%=m._id%>" <%= input_mascota == m._id ? 'selected' : '' %>> 
+                <%=m.nombre%>
+            </option>
+        <%}); %>
+    </select>
+    <br>
+    
+    <label for="responsable"> Responsable del proceso. </label>
+    <% var input_responsable = oldInput.value('responsable') ?? (locals.edit ? edit.responsable : null); %> 
+    <select name="responsable" id="responsable" >
+        <%personal.forEach(emp => { %>
+            <option value="<%=emp._id%>" <%= input_responsable == emp._id ? 'selected' : '' %>> 
+                <%=emp.apellidos%> <%=emp.nombres%> 
+            </option>
+        <%}); %>
+    </select>
+    <br>
+
+    <label for="estado"> Estado de la adopción: </label>
+    <% var input_estado = oldInput.value('estado') ?? (locals.edit ? edit.estado : null); %> 
+    <select name="estado" id="estado" >
+        <%for(e in estados) { %>
+            <option value="<%=e%>" <%= input_estado == e ? 'selected' : '' %>> 
+                <%=estados[e]%>
+            </option>
+        <%}; %>
+    </select>
+    <br>
+
+    <button type="submit">
+        <%if (modo == "add") {%>
+            Añadir al historial
+        <%} else {%>
+            Guardar cambios
+        <%}%>
+    </button>
+</form>
+
+<%- include("../footer") %> 

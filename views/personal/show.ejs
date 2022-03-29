@@ -1,3 +1,8 @@
+<%- include("../header", {seccion: "Pagina Principal", opciones: [
+{link: "/mascotas", label: "Mascotas"},
+{link: "/adopciones", label: "Adopciones"},
+{link: "/personal", label: "Personal",  activo: true} ]})%>
+
 <h1>Detalles de <%=empleado.apellidos%> <%=empleado.nombres%></h1>
 
 <p>
@@ -6,3 +11,5 @@
     <b>Apellidos:</b> <%=empleado.apellidos%> <br>
     <b>Cargo: </b> <%= cargos_nombres[empleado.cargo] %> <br>
 </p> 
+
+<%- include("../footer") %> 

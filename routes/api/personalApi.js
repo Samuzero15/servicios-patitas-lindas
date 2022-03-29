@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const Empleado = require('../../models/empleado');
+const mids = require('./middlewares');
 
 // Todo el personal disponible.
 router.get("/", async (req, res) => {
@@ -12,7 +13,7 @@ router.get("/", async (req, res) => {
 });
 
 // Un empleado en especifico
-router.get("/:id", getEmpleado, (req,res) => {
+router.get("/:id", mids.getEmpleado, (req,res) => {
     res.send(res.empleado);
 });
 // Añadir empleado
@@ -30,7 +31,7 @@ router.post("/", async (req, res) => {
     }
 });
 // Editar empleado
-router.patch("/:id", getEmpleado, async (req,res) => {
+router.patch("/:id", mids.getEmpleado, async (req,res) => {
     const cambiosEmpleado = updateEmpleado(res.empleado, req.body);
     try {
         res.status(202).json(await cambiosEmpleado.save());
@@ -39,7 +40,7 @@ router.patch("/:id", getEmpleado, async (req,res) => {
     }
 });
 // Eliminar empleado
-router.delete("/:id", getEmpleado, async (req,res) => {
+router.delete("/:id", mids.getEmpleado, async (req,res) => {
     try {
         if(req.params.id == "*"){
             await Empleado.deleteMany();
@@ -59,21 +60,6 @@ function updateEmpleado(actual, cambios){
     actual.apellidos    = cambios.apellidos ?? actual.apellidos; 
     actual.cargo        = cambios.cargo ?? actual.cargo; 
     return actual
-}
-
-async function getEmpleado(req, res, proceed){
-    let empleado;
-    if(req.params.id == "*") {proceed(); return;}
-    try {
-        empleado = await Empleado.findById(req.params.id);
-        if(empleado == null){
-            return res.status(404).json({message: "El empleado no existe en la base de datos."});
-        }
-    } catch (error) {
-        return res.status(500).json({message: error.message});
-    }
-    res.empleado = empleado;
-    proceed();
 }
 
 module.exports = router;

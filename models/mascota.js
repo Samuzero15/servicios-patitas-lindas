@@ -38,7 +38,7 @@ const mascotaSchema = new mongoose.Schema({
     historial: {
         type: Array,
         default: []
-    },adopciones: { // todos los procesos de adopciones de esta mascota.
+    },posiblesDuenos: { // Todos los posibles dueños
         type: Array,
         default: []
     },duenoActual: {// La adopcion exitosa.

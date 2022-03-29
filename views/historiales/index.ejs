@@ -1,37 +1,53 @@
+<%- include("../header", {seccion: "Historiales", opciones: [
+{link: "/mascotas", label: "Mascotas", activo: true},
+{link: "/adopciones", label: "Adopciones"},
+{link: "/personal", label: "Personal"} ]})%>
+
 <h1>
     Historial medico de <%= mascota.nombre %>
 </h1>
 
-<a href="/historiales/<%=mascota._id%>/add">Añadir una entrada al historial</a><br>
-<a href="/mascotas/show/<%=mascota._id%>">Regresar a detalles de mascota</a><br>
+<a href="/historiales/<%=mascota._id%>/add" class="btn btn-primary">Añadir una entrada al historial</a>
+<a href="/mascotas/show/<%=mascota._id%>" class="btn btn-secondary">Regresar a detalles de mascota</a>
 <%if(messages.noti){%>
     <h3><%=messages.noti%></h3>
 <%}%>
+<hr>
 <% if(historial.length > 0) { %>
-<table>
-    <tr>
-        <th>Fecha</th><th>Descripcion</th><th>Evento</th><th>Realizado por</th><th>Acciones:</th>
-    </tr>
-    
-    
-    <%historial.forEach((e)=>{%>
-    <tr>
-        <td><%=e.fecha%></td>
-        <td><%=e.descripcion%> </td>
-        <td><%=eventos[e.evento]%></td>
-        <%var medico = personal.find(p => p._id == e.medico);%>
-        <td> <%=medico.nombres%> <%=medico.apellidos%> </td>
-        <td>
-            <a href="/historiales/<%=mascota._id%>/edit/<%=e._id%>">Editar</a>
-            <form action="/historiales/<%=mascota._id%>/delete/<%=e._id%>" method="post" 
-                onsubmit="confirm('¿Seguro que quieres eliminar esta entrada? ¡Esta accion no se puede deshacer!')">
-                <input type="submit" value="Eliminar">
-            </form>
-        </td>
-    </tr>
-    <%});%>
+<table class="table table-striped table-hover">
+    <thead>
+        <tr scope="col">
+            <th >#</th>
+            <th>Fecha</th>
+            <th>Descripcion</th>
+            <th>Evento</th>
+            <th>Realizado por</th>
+            <th>Acciones:</th>
+        </tr>
+    </thead>
+    <tbody>
+        <%historial.forEach((e, i)=>{%>
+        <tr>
+            <th scope="row"><%=i + 1%></th>
+            <td><%=e.fecha%></td>
+            <td><%=e.descripcion%> </td>
+            <td><%=eventos[e.evento]%></td>
+            <%var medico = personal.find(p => p._id == e.medico);%>
+            <td> <%=medico.nombres%> <%=medico.apellidos%> </td>
+            <td class="btn-group">
+                <a href="/historiales/<%=mascota._id%>/edit/<%=e._id%>" class="btn btn-warning">Editar</a>
+                <form action="/historiales/<%=mascota._id%>/delete/<%=e._id%>" method="post" 
+                    onsubmit="return confirm('¿Seguro que quieres eliminar esta entrada? ¡Esta accion no se puede deshacer!')">
+                    <input type="submit" class="btn btn-danger" value="Eliminar">
+                </form>
+            </td>
+        </tr>
+        <%});%>
+    </tbody>
 </table>
 
 <%} else{ %> 
     <h3> No hay nada en el historial de este animal.</h3>
 <% } %> 
+
+<%- include("../footer") %> 

@@ -1,3 +1,7 @@
+<%- include("../header", {seccion: "Pagina Principal", opciones: [
+{link: "/mascotas", label: "Mascotas", activo: true},
+{link: "/adopciones", label: "Adopciones"},
+{link: "/personal", label: "Personal"} ]})%>
 
 <h1>Detalles de <%= mascota.nombre%></h1>
 
@@ -13,8 +17,13 @@
         <div style="display: none;" id="lon"><%= mascota.ubicacion[1] %></div>
     </div>
     <b><a href="/historiales/<%= mascota._id%>">Ver historial clinico</a></b> <br>
-    <b>Ver posibles dueños (WIP)</b> <br>
-    <b>Dueño actual (WIP)</b> <br>
+    <b><a href="/pos_duenos/<%= mascota._id%>">Ver posibles dueños</a></b> <br>
+    <b>Dueño actual:</b> 
+    <% console.log(dueno) %> 
+    <% if(dueno == null) { %> (Desconocido) 
+        <%} else { %> <%= dueno.nombres%> <%= dueno.apellidos%> <%} %> 
+    
+    <br>
 </p> 
 <div style="display: none;" id="nomb"><%=mascota.nombre%></div>
 <div style="display: none;" id="enco"><%=mascota.encontrado_por%></div>
@@ -40,3 +49,5 @@
     marker.bindPopup(apopup);
     marker.openPopup();
 </script>
+
+<%- include("../footer")%>

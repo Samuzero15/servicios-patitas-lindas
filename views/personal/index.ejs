@@ -1,19 +1,45 @@
+<%- include("../header", {seccion: "Empleados de la institución", opciones: [
+{link: "/mascotas", label: "Mascotas"},
+{link: "/adopciones", label: "Adopciones"},
+{link: "/personal", label: "Personal", activo: true} ]})%>
+
 <h1>
     Personal disponible en la base de datos
 </h1>
 
-<a href="/personal/add">Añadir un nuevo empleado al personal</a><br>
-
-<% personal.forEach((p) => { %>
-    <%= p.cedula%>
-    <%= p.nombres%>
-    <%= p.apellidos%>
-    <%= cargos_nombres[p.cargo] %>
-    <a href="/personal/show/<%=p._id%>">Detalles</a>
-    <a href="/personal/edit/<%=p._id%>">Editar</a>
-    <form action="/personal/delete/<%=p._id%>" method="post" 
-        onsubmit="confirm('¿Seguro que quieres eliminar a este empleado? ¡Esta accion no se puede deshacer!')">
-        <input type="submit" value="Eliminar">
-    </form>
-    <br>
+<a href="/personal/add" class="btn btn-primary">
+    Añadir un nuevo empleado al personal
+</a> 
+<hr>
+<table class="table table-striped table-hover">
+    <thead>
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">Cedula</th>
+            <th scope="col">Nombres y apellidos</th>
+            <th scope="col">Cargo</th>
+            <th scope="col">Acciones</th>
+        </tr>
+    </thead>
+    <tbody>
+<% personal.forEach((p, i) => { %>
+    <tr>
+        <th scope="row"><%= i+1%></th>
+        <td><%= p.cedula%></td>
+        <td><%= p.nombres%> <%= p.apellidos%></td>
+        <td><%= cargos_nombres[p.cargo] %></td>
+        <td class="btn-group">
+            <a href="/personal/show/<%=p._id%>" class="btn btn-secondary">Detalles</a>
+            <a href="/personal/edit/<%=p._id%>" class="btn btn-warning">Editar</a>
+            <form action="/personal/delete/<%=p._id%>" method="post" 
+                onsubmit="return confirm('¿Seguro que quieres eliminar a este empleado? ¡Esta accion no se puede deshacer!');">
+                <button type="submit" class="btn btn-danger" > Eliminar </button>
+            </form>
+        </td>
+    </tr>
 <% }) %>
+    </tbody>
+</table>
+
+
+<%- include("../footer") %> 

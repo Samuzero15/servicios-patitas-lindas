@@ -1,11 +1,22 @@
 
+<%- include("../header", {seccion: "Historiales", opciones: [
+{link: "/mascotas", label: "Mascotas", activo: true},
+{link: "/adopciones", label: "Adopciones"},
+{link: "/personal", label: "Personal"} ]})%>
+
 <%if (messages.error) {%>
     <%=messages.error%>
 <%}%>
 
 <%if (modo == "add") {%>
+    <h1>
+        Añadir una entrada al Historial Medico
+    </h1>
 <form action="/historiales/<%=mascota._id%>/add" method="post">
 <%} else {%>
+    <h1>
+        Editar entrada del Historial Medico
+    </h1>
 <form action="/historiales/<%=mascota._id%>/edit/<%=edit._id%>" method="post">
 <%}%>
     <input type="hidden" autocomplete="off">
@@ -41,3 +52,5 @@
         <%}%>
     </button>
 </form>
+
+<%- include("../footer") %> 

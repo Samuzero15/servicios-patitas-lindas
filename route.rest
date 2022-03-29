@@ -43,7 +43,7 @@ Content-Type: application/json
 DELETE http://localhost:5000/api/historiales/*/*
 
 ###
-DELETE http://localhost:5000/api/mascotas/*
+DELETE http://localhost:5000/api/adopciones/*
 
 
 ### 

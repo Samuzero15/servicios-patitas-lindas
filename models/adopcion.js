@@ -23,7 +23,7 @@ const adopcionSchema = mongoose.Schema({
         type: "String",
         required: true
     },
-    supervisadoPor:{ // empleado
+    responsable:{ // empleado
         type: "ObjectId",
         default: null
     },

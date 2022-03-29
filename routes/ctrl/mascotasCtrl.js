@@ -1,4 +1,5 @@
 const express = require('express');
+const mascota = require('../../models/mascota');
 const router = express.Router();
 const axios = require('axios').default;
 
@@ -99,13 +100,17 @@ router.post("/edit/:id", (req, res)=>{
 
 // Mostrar mascota
 router.get("/show/:id", (req, res)=>{
-    axios.get(process.env.API_MASCOTAS + req.params.id)
-    .then((response)=>{
+    const reqMascota = axios.get(process.env.API_MASCOTAS + req.params.id);
+    const reqAdopciones = axios.get(process.env.API_ADOPCIONES);
+    axios.all([reqMascota, reqAdopciones])
+    .then(axios.spread((...responses)=>{
         //res.json(response.data);
+        console.log(responses[1].data);
         res.render(routename + "/show.ejs", {
-            mascota: response.data,
+            mascota: responses[0].data,
+            adopcion: responses[1].data.find(a => a._id == mascota.duenoActual)
         });
-    }).catch((error)=>{
+    })).catch((error)=>{
         res.redirect("/mascotas");
     })
 });

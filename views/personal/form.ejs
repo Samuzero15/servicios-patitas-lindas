@@ -1,3 +1,8 @@
+<%- include("../header", {seccion: "Pagina Principal", opciones: [
+{link: "/mascotas", label: "Mascotas"},
+{link: "/adopciones", label: "Adopciones"},
+{link: "/personal", label: "Personal",  activo: true} ]})%>
+
 <%if (messages.error) {%>
     <%=messages.error%>
 <%}%>
@@ -25,7 +30,8 @@
         <%}%>
     </select>
     <br>
-        
-    </div>
     <button type="submit">Registrar empleado</button>
+    
 </form>
+
+<%- include("../footer") %> 

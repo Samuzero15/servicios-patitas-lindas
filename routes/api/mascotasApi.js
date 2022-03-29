@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const Mascota = require('../../models/mascota');
 const Entrada = require('../../models/entrada');
+const mids = require('./middlewares');
 
 // Todas las mascotas
 router.get('/', async (req, res) => {
@@ -14,7 +15,7 @@ router.get('/', async (req, res) => {
 });
 
 // 1 sola mascota
-router.get('/:id', getMascota, (req, res) => {
+router.get('/:id', mids.getMascota, (req, res) => {
     res.send(res.mascota);
 });
 // Añadir mascota
@@ -36,7 +37,7 @@ router.post('/', async (req, res) => {
     }
 });
 // Editar mascota
-router.patch('/:id',  getMascota, async (req, res) => {
+router.patch('/:id',  mids.getMascota, async (req, res) => {
     let cambiosMascota = editarMascota(res.mascota, req.body);
     try {
         const mascotaEditada = await cambiosMascota.save();
@@ -47,7 +48,7 @@ router.patch('/:id',  getMascota, async (req, res) => {
 
 });
 // Eliminar mascota
-router.delete('/:id', getMascota, async (req, res) => {
+router.delete('/:id', mids.getMascota, async (req, res) => {
     try {
         if(req.params.id == "*"){
             await Entrada.deleteMany();
@@ -74,22 +75,6 @@ function editarMascota(actual, edicion){
     actual.ubicacion =      edicion.ubicacion ?? actual.ubicacion;
     actual.encontrado_por = edicion.encontrado_por ?? edicion.encontrado_por;
     return actual;
-}
-
-async function getMascota(req, res, proceed) {
-    let mascota;
-    if(req.params.id == "*") {proceed(); return;}
-    try {
-        
-        mascota = await Mascota.findById(req.params.id);
-        if(mascota == null){
-            return res.status(404).json({message: "La mascota no existe en la base de datos."});
-        }
-    } catch (error) {
-        return res.status(500).json({message: error.message});
-    }
-    res.mascota = mascota;
-    proceed();
 }
 
 module.exports = router;

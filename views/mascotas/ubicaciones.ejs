@@ -1,15 +1,14 @@
-<!DOCTYPE html>
-<html>
-  <head>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
-    <meta http-equiv="Content-type" content="text/html;charset=UTF-8">
-    <title>Ubicacion de los animales.</title>
-    <link rel="stylesheet" href="/public/styles.css">
+
+<%- include("../header", {seccion: "Ubicacion de los animales", opciones: [
+{link: "/mascotas", label: "Mascotas", activo: true},
+{link: "/adopciones", label: "Adopciones"},
+{link: "/personal", label: "Personal"} ]})%>
+
     <link rel="stylesheet" href="/public/leaflet/leaflet.css"/>
-  </head>
-  <body>
     <script src="/public/leaflet/leaflet.js"></script>
-      <div id="map">
+    <script src="/public/leaflet-easyprint.js"></script>
+    <h1>Ubicacion de todos los animales rescatados</h1>
+      <div id="map" style="height: 500px;">
       </div>
       
     <script type="text/javascript">
@@ -30,7 +29,6 @@
         else{
           myJson.forEach(m => {
             //alert(m.ubicacion[0] + " , " + m.ubicacion[1]);
-            console.log(m);
             var marker = L.marker(m.ubicacion).addTo(map);
             var apopup = L.popup({closeButton : false, autoClose: false})
             .setContent("¡Aqui encontramos a "+ m.nombre +"!");
@@ -49,9 +47,13 @@
           });
         }
       }
-
-
       window.onload = cargarMascotas;
+
+      L.easyPrint({
+        title: 'Imprimir mapa',
+        position: 'bottomright',
+        sizeModes: ['A4Portrait', 'A4Landscape']
+      }).addTo(map);
     </script>
-  </body>
-</html>
+
+<%- include("../footer") %> 

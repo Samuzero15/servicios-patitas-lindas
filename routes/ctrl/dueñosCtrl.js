@@ -2,25 +2,21 @@ const express = require('express');
 const router = express.Router();
 const axios = require('axios').default;
 
-const routename = "historiales/";
-const historialesApi = process.env.API_HISTORIALES
+const main_route = "/pos_duenos/";
+const routename = "dueños/";
+const duenosApi = process.env.API_DUENOS
 const mascotasApi = process.env.API_MASCOTAS
-const personalApi = process.env.API_PERSONAL
 
 // Saca el historial de la mascota.
 router.get("/:mascota", async (req, res)=>{
-    const reqHistorial = axios.get(historialesApi + req.params.mascota);
-    const reqPersonal = axios.get(personalApi);
+    const reqDuenos = axios.get(duenosApi + req.params.mascota);
     const reqMascotas = axios.get(mascotasApi + req.params.mascota);
-    const reqEventosHistorial = axios.get(historialesApi + "eventos");
 
-    axios.all([reqHistorial, reqMascotas, reqPersonal, reqEventosHistorial])
+    axios.all([reqDuenos, reqMascotas])
     .then(axios.spread((...responses)=>{
         res.render(routename + '/index.ejs', {
-            historial: responses[0].data,
+            posiblesDuenos: responses[0].data,
             mascota: responses[1].data,
-            personal: responses[2].data,
-            eventos: responses[3].data
         });
     })).catch((e) =>{
         req.flash("error", e);
@@ -29,18 +25,14 @@ router.get("/:mascota", async (req, res)=>{
 });
 
 
-// Añadir al historial (GET)
+// Añadir posible dueno (GET)
 router.get("/:mascota/add", async (req, res)=>{
-    const reqPersonal = axios.get(personalApi);
     const reqMascotas = axios.get(mascotasApi + req.params.mascota);
-    const reqEventosHistorial = axios.get(historialesApi + "eventos");
 
-    axios.all([reqMascotas, reqPersonal, reqEventosHistorial])
+    axios.all([reqMascotas])
     .then(axios.spread((...responses)=>{
         res.render(routename + '/form.ejs', {
             mascota: responses[0].data,
-            personal: responses[1].data,
-            eventos: responses[2].data,
             modo: "add",
             oldInput : req.oldInput
         });
@@ -50,17 +42,18 @@ router.get("/:mascota/add", async (req, res)=>{
     });
 });
 
-// Añadir al historial (POST)
+
+// Añadir posible dueño (POST)
 router.post("/:mascota/add", (req, res)=>{
     datos = req.body;
-    axios.post(historialesApi + req.params.mascota, req.body)
+    axios.post(duenosApi + req.params.mascota, req.body)
     .then((response)=>{
         if(response.status != 201){
             req.flash("error", "Algo salio mal! (" + response.status +")");
-            res.redirect("/historiales/"+ req.params.mascota + "/add");
+            res.redirect(main_route + req.params.mascota + "/add");
         }else{
             req.flash("noti", "Entrada al historial añadida!");
-            res.redirect("/historiales/"+ req.params.mascota);
+            res.redirect(main_route + req.params.mascota);
         }
     }).catch((e)=>{
         console.log(e);
@@ -71,18 +64,15 @@ router.post("/:mascota/add", (req, res)=>{
 
 // Editar entrada (GET)
 router.get("/:mascota/edit/:id", (req, res)=>{
-    const reqEntrada = axios.get(historialesApi + req.params.mascota + "/" + req.params.id);
-    const reqPersonal = axios.get(personalApi);
+    const reqDueno = axios.get(duenosApi + req.params.mascota + "/" + req.params.id);
     const reqMascotas = axios.get(mascotasApi + req.params.mascota);
-    const reqEventosHistorial = axios.get(historialesApi + "eventos");
+    
 
-    axios.all([reqEntrada, reqMascotas, reqPersonal, reqEventosHistorial])
+    axios.all([reqDueno, reqMascotas])
     .then(axios.spread((...responses)=>{
         res.render(routename + '/form.ejs', {
             edit: responses[0].data,
             mascota: responses[1].data,
-            personal: responses[2].data,
-            eventos: responses[3].data,
             modo: "edit",
             oldInput: req.oldInput
         });
@@ -95,16 +85,17 @@ router.get("/:mascota/edit/:id", (req, res)=>{
 // Editar entrada (POST)
 router.post("/:mascota/edit/:id", (req, res)=>{
     datos = req.body;
-    axios.patch(historialesApi + req.params.mascota + "/" + req.params.id, datos)
+    axios.patch(duenosApi + req.params.mascota + "/" + req.params.id, datos)
     .then((response)=>{
         if(response.status != 202){
             req.flash("error","Algo salio mal! ("+response.status+")");
-            res.redirect("/historiales/" + req.params.mascota + "/edit/" + req.params.id);
+            res.redirect(main_route + req.params.mascota + "/edit/" + req.params.id);
         }else{
             req.flash("noti", "Entrada al historial editada!");
-            res.redirect("/historiales/" + req.params.mascota);
+            res.redirect(main_route + req.params.mascota);
         }
     }).catch((error)=>{
+        //console.log(error);
         req.flash("error", error);
         return res.redirect("/");
     })
@@ -113,11 +104,11 @@ router.post("/:mascota/edit/:id", (req, res)=>{
 
 // Eliminar entrada
 router.post("/:mascota/delete/:id", (req, res) => {
-    axios.delete(historialesApi + req.params.mascota + "/" + req.params.id)
+    axios.delete(duenosApi + req.params.mascota + "/" + req.params.id)
     .then((response)=>{
         //res.json(response.data);
         req.flash("noti",response.data.message);
-        res.redirect("/historiales/"+ req.params.mascota);
+        res.redirect(main_route + req.params.mascota);
     }).catch((error)=>{
         req.flash("error", error);
         return res.redirect("/");

@@ -1,0 +1,49 @@
+<%- include("../header", {seccion: "Posibles Dueños", opciones: [
+{link: "/mascotas", label: "Mascotas", activo: true},
+{link: "/adopciones", label: "Adopciones"},
+{link: "/personal", label: "Personal"} ]})%>
+
+<h1>
+    Posibles duenos de <%= mascota.nombre %>
+</h1>
+
+<a href="/pos_duenos/<%=mascota._id%>/add" class="btn btn-primary">Añadir una posible dueño</a><br>
+<a href="/mascotas/show/<%=mascota._id%>" class="btn btn-secondary">Regresar a detalles de mascota</a><br>
+<%if(messages.noti){%>
+    <h3><%=messages.noti%></h3>
+<%}%>
+<% if(posiblesDuenos.length > 0) { %>
+<table>
+    <tr>
+        <th>#</th>
+        <th>Fecha</th>
+        <th>Cedula</th>
+        <th>Nombre y Apellido</th>
+        <th>Telefono</th>
+        <th>Acciones</th>
+    </tr>
+    
+    
+    <%posiblesDuenos.forEach((d, i)=>{%>
+    <tr>
+        <th><%=i + 1%></th>
+        <td><%=d.fecha%></td>
+        <td><%=d.cedula%></td>
+        <td><%=d.nombres%> <%=d.apellidos%></td>
+        <td><%=d.telefono%></td>
+        <td>
+            <a href="/pos_duenos/<%=mascota._id%>/edit/<%=d._id%>">Editar</a>
+            <form action="/pos_duenos/<%=mascota._id%>/delete/<%=d._id%>" method="post" 
+                onsubmit="confirm('¿Seguro que quieres eliminar esta entrada? ¡Esta accion no se puede deshacer!')">
+                <input type="submit" value="Eliminar">
+            </form>
+        </td>
+    </tr>
+    <%});%>
+</table>
+
+<%} else{ %> 
+    <h3> No hay posibles duenos de esta mascota aun...</h3>
+<% } %> 
+
+<%- include("../footer") %> 

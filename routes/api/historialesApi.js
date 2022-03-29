@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const Entrada = require('../../models/entrada');
-const Mascota = require('../../models/mascota');
+const mids = require('./middlewares');
 
 // Obten todas las entradas del todos los historiales.
 
@@ -28,7 +28,7 @@ router.get("/", async (req, res) => {
 });
 
 // Todo el historial de la mascota.
-router.get("/:mascota", getMascota, async (req, res) => {
+router.get("/:mascota", mids.getMascota, async (req, res) => {
     try {
         res.json(await Entrada.find({mascota: res.mascota}));
     } catch (error) {
@@ -37,7 +37,7 @@ router.get("/:mascota", getMascota, async (req, res) => {
 });
 
 // Insertar una entrada al historial.
-router.post("/:mascota", getMascota, async (req, res) => {
+router.post("/:mascota", mids.getMascota, async (req, res) => {
     datosEntrada = new Entrada({
         mascota:        req.params.mascota,
         descripcion:    req.body.descripcion,
@@ -54,12 +54,12 @@ router.post("/:mascota", getMascota, async (req, res) => {
 });
 
 // Lee la entrada del historial de la mascota
-router.get("/:mascota/:id", getMascota, getEntrada, (req, res) => {
+router.get("/:mascota/:id", mids.getMascota, mids.getEntrada, (req, res) => {
     res.send(res.entrada);
 });
 
 // Editar la entrada del historial.
-router.patch("/:mascota/:id", getMascota, getEntrada, async (req, res) => {
+router.patch("/:mascota/:id", mids.getMascota, mids.getEntrada, async (req, res) => {
     const cambiosEntrada = editar(res.entrada, req.body);
     try {
         console.log(cambiosEntrada);
@@ -71,7 +71,7 @@ router.patch("/:mascota/:id", getMascota, getEntrada, async (req, res) => {
 });
 
 // Eliminar la entrada del historial.
-router.delete("/:mascota/:id", getMascota, getEntrada, async (req, res) => {
+router.delete("/:mascota/:id", mids.getMascota, mids.getEntrada, async (req, res) => {
     try {
         if(req.params.mascota == "*"){
             await Entrada.deleteMany();
@@ -98,36 +98,6 @@ function editar(actual, edicion){
     actual.evento       = edicion.evento      ?? actual.evento;
     actual.medico       = edicion.medico      ?? actual.medico;
     return actual;
-}
-
-async function getMascota(req, res, proceed) {
-    let mascota;
-    if(req.params.id == "*") {proceed(); return;}
-    try {
-        mascota = await Mascota.findById(req.params.mascota);
-        if(mascota == null){
-            return res.status(404).json({message: "La mascota no existe en la base de datos."});
-        }
-    } catch (error) {
-        return res.status(500).json({message: error.message});
-    }
-    res.mascota = mascota;
-    proceed();
-}
-
-async function getEntrada(req, res, proceed) {
-    let entrada;
-    if(req.params.id == "*") {proceed(); return;}
-    try {
-        entrada = await Entrada.findById(req.params.id);
-        if(entrada == null){
-            return res.status(404).json({message: "La entrada del historial no existe en la base de datos."});
-        }
-    } catch (error) {
-        return res.status(500).json({message: error.message});
-    }
-    res.entrada = entrada;
-    proceed();
 }
 
 module.exports = router;
