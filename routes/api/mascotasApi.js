@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const Mascota = require('../../models/mascota');
 const Entrada = require('../../models/entrada');
+const Adopcion = require('../../models/adopcion');
 const mids = require('./middlewares');
 
 // Todas las mascotas
@@ -55,7 +56,8 @@ router.delete('/:id', mids.getMascota, async (req, res) => {
             await Mascota.deleteMany();
             res.json({message: "Mascotas eliminadas."});
         }else{
-            await Entrada.deleteMany({mascota: res.mascota.id});
+            await Entrada.deleteMany({mascota: res.mascota._id});
+            await Adopciones.deleteMany({mascota: res.mascota._id});
             await res.mascota.remove();
             res.json({message: "Mascota eliminada."});
         }

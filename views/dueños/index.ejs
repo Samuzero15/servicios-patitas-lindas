@@ -7,8 +7,9 @@
     Posibles duenos de <%= mascota.nombre %>
 </h1>
 
-<a href="/pos_duenos/<%=mascota._id%>/add" class="btn btn-primary">Añadir una posible dueño</a><br>
-<a href="/mascotas/show/<%=mascota._id%>" class="btn btn-secondary">Regresar a detalles de mascota</a><br>
+<a href="/pos_duenos/<%=mascota._id%>/add" class="btn btn-primary">Añadir un posible dueño</a>
+<a href="/mascotas/show/<%=mascota._id%>" class="btn btn-secondary">Regresar a detalles de mascota</a>
+<hr>
 <%if(messages.noti){%>
     <h3><%=messages.noti%></h3>
 <%}%>

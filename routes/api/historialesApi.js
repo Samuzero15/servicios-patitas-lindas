@@ -65,7 +65,6 @@ router.patch("/:mascota/:id", mids.getMascota, mids.getEntrada, async (req, res)
         console.log(cambiosEntrada);
         res.status(202).json(await cambiosEntrada.save());
     } catch (error) {
-        console.log("sex");
         res.status(400).json({message: error.message});
     }
 });

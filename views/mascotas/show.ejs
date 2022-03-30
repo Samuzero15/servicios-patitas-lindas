@@ -20,10 +20,9 @@
     <b><a href="/pos_duenos/<%= mascota._id%>">Ver posibles dueños</a></b> <br>
     <b>Dueño actual:</b> 
     
-    <% if(dueno == null) { %> (Desconocido) 
+    <% if(mascota.duenoActual == null) { %> (Desconocido) 
         <%} else { %>
-            <% console.log(dueno) %> 
-             <%= dueno.nombres%> <%= dueno.apellidos%> <%} %> 
+             <%= adopcion.nombres%> <%= adopcion.apellidos%> <%} %> 
     
     <br>
 </p> 

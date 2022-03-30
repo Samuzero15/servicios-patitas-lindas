@@ -105,10 +105,15 @@ router.get("/show/:id", (req, res)=>{
     axios.all([reqMascota, reqAdopciones])
     .then(axios.spread((...responses)=>{
         //res.json(response.data);
+        var mascota = responses[0].data;
         console.log(responses[1].data);
         res.render(routename + "/show.ejs", {
-            mascota: responses[0].data,
-            adopcion: responses[1].data.find(a => a._id == mascota.duenoActual)
+            mascota: mascota,
+            adopcion: responses[1].data.find(a => {
+                console.log(a._id);
+                console.log(mascota.duenoActual);
+               return a._id == mascota.duenoActual;
+            })
         });
     })).catch((error)=>{
         res.redirect("/mascotas");

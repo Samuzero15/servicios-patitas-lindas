@@ -38,7 +38,6 @@ db.once('open', () => console.log("Conectado a la base de datos. UwU"));
 // Prepara las vistas estaticas.
 app.get("/", (req, res) => {res.render("index.ejs");});
 
-//const ctrlMascotas = 
 // Define los controladores.
 app.use("/adopciones", require('./routes/ctrl/adopcionesCtrl'));
 app.use("/mascotas", require('./routes/ctrl/mascotasCtrl'));
