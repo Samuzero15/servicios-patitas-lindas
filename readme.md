@@ -6,4 +6,4 @@ Necesitas Node.js, y MongoDB.
 2) Ejecuta mongod.exe
 3) 'npm run devStart' para ejecutar la app.
 
-# Enlace del video: https://youtu.be/A7XxhzClmss 
+# Enlace del video: https://youtu.be/w6dRZBas1Xc
